@@ -134,21 +134,56 @@ namespace Tugas_Pertemuan_7
             return "E";
         }
 
+        //private static string GetFuzzyCategory(double nilai)
+        //{
+        //    if (nilai >= 85)
+        //        return "Tinggi";
+
+        //    if (nilai >= 70)
+        //        return "Sedang";
+
+        //    if (nilai >= 60)
+        //        return "Cukup";
+
+        //    if (nilai >= 50)
+        //        return "Kurang";
+
+        //    return "Rendah";
+        //}
+
         private static string GetFuzzyCategory(double nilai)
         {
+            // 1. Hitung derajat keanggotaan untuk masing-masing kategori (0.0 sampai 1.0)
+            double muTinggi = 0.0;
+            double muSedang = 0.0;
             if (nilai >= 85)
+            {
+                muTinggi = 1.0;
+            }
+            else if (nilai > 75 && nilai < 85)
+            {
+                muTinggi = (nilai - 75) / (85 - 75);
+            }
+
+            // Kategori Sedang turun dari nilai 75 menuju 0 di nilai 85
+            if (nilai >= 70 && nilai <= 75)
+            {
+                muSedang = 1.0;
+            }
+            else if (nilai > 75 && nilai < 85)
+            {
+                muSedang = (85 - nilai) / (85 - 75);
+            }
+
+            // 2. Bandingkan nilai derajat keanggotaan mana yang paling tinggi (Defuzzifikasi)
+            if (muTinggi >= muSedang)
+            {
                 return "Tinggi";
-
-            if (nilai >= 70)
+            }
+            else
+            {
                 return "Sedang";
-
-            if (nilai >= 60)
-                return "Cukup";
-
-            if (nilai >= 50)
-                return "Kurang";
-
-            return "Rendah";
+            }
         }
 
         private void buttonReset_Click(object? sender, EventArgs e)
